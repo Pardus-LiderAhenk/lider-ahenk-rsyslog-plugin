@@ -7,6 +7,10 @@
                  http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://svn.apache.org/repos/asf/aries/trunk/blueprint/blueprint-cm/src/main/resources/org/apache/aries/blueprint/compendium/cm/blueprint-cm-1.1.0.xsd
          ">
 
+	<service ref="rsyslogTemplate" interface="tr.org.liderahenk.lider.core.api.persistence.entities.IReportTemplate" />
+	<bean id="rsyslogTemplate"
+		class="tr.org.liderahenk.rsyslog.report.RsyslogReport" />
+		
 	<cm:property-placeholder persistent-id="tr.org.liderahenk.rsyslog"
 		update-strategy="reload">
 	</cm:property-placeholder>
@@ -14,6 +18,7 @@
 	<!-- IPluginInfo implementation is used to register plugin -->
 	<service ref="pluginInfoImpl"
 		interface="tr.org.liderahenk.lider.core.api.plugin.IPluginInfo" />
+		
 	<bean id="pluginInfoImpl" class="tr.org.liderahenk.rsyslog.plugininfo.PluginInfoImpl"
 		init-method="refresh">
 		<!-- Plugin definition -->

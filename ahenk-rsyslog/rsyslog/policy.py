@@ -27,25 +27,15 @@ class Rsyslog(AbstractPlugin):
         self.log_rotate_conf_file_path = '/etc/logrotate.conf'
 
     def handle_policy(self):
-        print('Handling policy')
-        #self.context.create_response(code=MessageCode.POLICY_PROCESSED.value, message='Message about process result', data=data, content_type=ContentType.APPLICATION_JSON.value)
-        #self.context.get('something')
-        #self.context.execute('terminal command')
-        # etc ...
-        # TODO plugin policy works here
         if str(json.loads(self.data)['PROTOCOL']) == 'UDP':
             self.protocol='@'
         self.logger.debug('Processing Rsyslog plugin')
         items = json.loads(self.data)['items']
         for item in items:
             if str(item['isLocal']).upper() == 'EVET':
-                print('yerel')
                 self.rsyslog_conf += str(item['recordDescription'])+'\t'+str(item['logFilePath'])+'\n'
-                print(self.rsyslog_conf)
             else:
-                print('remote')
                 self.remote_conf += str(item['recordDescription'])+' '+self.protocol+str(json.loads(self.data)['ADDRESS'])+':'+str(json.loads(self.data)['GATE'])+'\n'
-                print(self.remote_conf)
         self.rsyslog_conf = self.default_config.replace("#RULE_STR#", self.rsyslog_conf)
         # self.task = tasklog:tail
         #
@@ -141,8 +131,6 @@ def handle_policy(profile_data, context):
         # Do what ever you want here
     # You can create command class but it is not necessary
     # You can use directly this method.
-    print('Sample Plugin Policy')
-    print('Profile Data : {}'.format(str(profile_data)))
     plugin = Rsyslog(profile_data, context)
     plugin.handle_policy()
 
