@@ -29,13 +29,6 @@
 		<property name="userOriented" value="${plugin.user.oriented}" />
 		<property name="policyPlugin" value="${plugin.policy.plugin}" />
 		<property name="xbased" value="${plugin.x.based}" />
-		<!-- Plugin distribution -->
-		<!-- There can be any number of these properties as long as related fields 
-			exist in PluginInfoImpl: -->
-		<property name="distroHost" value="${plugin.distro.host}" />
-		<property name="distroUsername" value="${plugin.distro.username}" />
-		<property name="distroPassword" value="${plugin.distro.password}" />
-		<property name="distroPath" value="${plugin.distro.path}" />
 	</bean>
 
 	<!-- ICommand implementation is used to process a task execution -->
