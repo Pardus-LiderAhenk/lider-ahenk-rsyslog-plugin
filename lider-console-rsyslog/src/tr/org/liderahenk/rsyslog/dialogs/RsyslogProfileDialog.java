@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import tr.org.liderahenk.liderconsole.core.constants.LiderConstants;
 import tr.org.liderahenk.liderconsole.core.dialogs.IProfileDialog;
+import tr.org.liderahenk.liderconsole.core.exceptions.ValidationException;
 import tr.org.liderahenk.liderconsole.core.model.Profile;
 import tr.org.liderahenk.liderconsole.core.utils.SWTResourceManager;
 import tr.org.liderahenk.liderconsole.core.widgets.Notifier;
@@ -65,7 +66,7 @@ public class RsyslogProfileDialog implements IProfileDialog {
 	private Label lblProtocol;
 	private Combo cmbProtocol;
 	private Text txtRemoteServerAddress;
-	private Text txtGate;
+	private Text txtPort;
 	private Label lblManagedLogs;
 	private Button btnAdd;
 	private Button btnDelete;
@@ -243,11 +244,11 @@ public class RsyslogProfileDialog implements IProfileDialog {
 		lblGate = new Label(composite, SWT.NONE);
 		lblGate.setText(Messages.getString("GATE"));
 
-		txtGate = new Text(composite, SWT.BORDER);
-		txtGate.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		txtPort = new Text(composite, SWT.BORDER);
+		txtPort.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		if (profile != null && profile.getProfileData() != null
 				&& profile.getProfileData().get(RsyslogConstants.PARAMETERS.GATE) != null) {
-			txtGate.setText((String) profile.getProfileData().get(RsyslogConstants.PARAMETERS.GATE));
+			txtPort.setText((String) profile.getProfileData().get(RsyslogConstants.PARAMETERS.GATE));
 		}
 
 		lblProtocol = new Label(composite, SWT.NONE);
@@ -304,8 +305,8 @@ public class RsyslogProfileDialog implements IProfileDialog {
 			if (list != null) {
 				List<LogFileListItem> items = new ArrayList<LogFileListItem>();
 				for (LinkedHashMap<String, String> map : list) {
-					LogFileListItem item = new LogFileListItem((String) map.get("isLocal"),(String) map.get("recordDescription"),
-							(String) map.get("logFilePath"));
+					LogFileListItem item = new LogFileListItem((String) map.get("isLocal"),
+							(String) map.get("recordDescription"), (String) map.get("logFilePath"));
 					items.add(item);
 				}
 				tableViewer.setInput(items);
@@ -436,8 +437,8 @@ public class RsyslogProfileDialog implements IProfileDialog {
 		if (txtRemoteServerAddress != null && !"".equals(txtRemoteServerAddress.getText())) {
 			profileData.put(RsyslogConstants.PARAMETERS.ADDRESS, txtRemoteServerAddress.getText());
 		}
-		if (txtGate != null && !"".equals(txtGate.getText())) {
-			profileData.put(RsyslogConstants.PARAMETERS.GATE, txtGate.getText());
+		if (txtPort != null && !"".equals(txtPort.getText())) {
+			profileData.put(RsyslogConstants.PARAMETERS.GATE, txtPort.getText());
 		}
 		profileData.put(RsyslogConstants.PARAMETERS.PROTOCOL, RsyslogUtils.getSelectedValue(cmbProtocol));
 
@@ -447,6 +448,19 @@ public class RsyslogProfileDialog implements IProfileDialog {
 			profileData.put(RsyslogConstants.PARAMETERS.LIST_ITEMS, items);
 		}
 		return profileData;
+	}
+
+	@Override
+	public void validateBeforeSave() throws ValidationException {
+		if (txtPort.getText() == null || txtPort.getText().isEmpty()) {
+			throw new ValidationException(Messages.getString("FILL_PORT"));
+		}
+		if (txtRemoteServerAddress.getText() == null || txtRemoteServerAddress.getText().isEmpty()) {
+			throw new ValidationException(Messages.getString("FILL_SERVER_ADDRESS"));
+		}
+		if (cmbProtocol.getSelectionIndex() == -1) {
+			throw new ValidationException(Messages.getString("SELECT_PROTOCOL"));
+		}
 	}
 
 	public LogFileListItem getItem() {
