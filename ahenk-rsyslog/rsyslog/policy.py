@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""
-Style Guide is PEP-8
-https://www.python.org/dev/peps/pep-0008/
-"""
+
+# Author: Cemre ALPSOY <cemre.alpsoy@agem.com.tr>
 
 from base.plugin.abstract_plugin import AbstractPlugin
 import json
+from base.model.enum.ContentType import ContentType
+
 
 class Rsyslog(AbstractPlugin):
     def __init__(self, data, context):
@@ -21,7 +21,6 @@ class Rsyslog(AbstractPlugin):
         self.remote_conf = ""
         self.protocol = '@@'
 
-        # File paths which used throughout this plugin.
         self.rsyslog_conf_file_path = '/etc/rsyslog.conf'
         self.remote_conf_file_path = '/etc/rsyslog.d/remote.conf'
         self.log_rotate_conf_file_path = '/etc/logrotate.conf'
@@ -37,16 +36,7 @@ class Rsyslog(AbstractPlugin):
             else:
                 self.remote_conf += str(item['recordDescription'])+' '+self.protocol+str(json.loads(self.data)['ADDRESS'])+':'+str(json.loads(self.data)['GATE'])+'\n'
         self.rsyslog_conf = self.default_config.replace("#RULE_STR#", self.rsyslog_conf)
-        # self.task = tasklog:tail
-        #
-        ########################################################################
-        #
-        # 'rsyslog' configuration
-        #
-        ########################################################################
         self.logger.debug('Processing rsyslog config')
-        # Backup old rsyslog config files (rsyslog.conf & /etc/rsyslog.d/*.conf --> *.conf.orig).
-        # Rename files named as *.conf to *.conf.orig
         (result_code, p_out, p_err) = self.execute(
             "find /etc/rsyslog.d/ -name '*.conf' -exec bash -c 'mv $0 ${0/conf/conf.orig}' {} \;", shell=True)
         if str(p_out.strip()) == '0':
@@ -54,21 +44,14 @@ class Rsyslog(AbstractPlugin):
         else:
             self.logger.debug('Error while backing up old config files')
 
-        # Read contents of '/etc/rsyslog.conf' file from task parameters.
         rsyslog_conf_contents = str(self.rsyslog_conf).strip()
         self.logger.debug(self.rsyslog_conf_file_path + ': \n' + rsyslog_conf_contents + '\n')
 
-        # Update rsyslog configuration file '/etc/rsyslog.conf'.
-        # todo cemre nabir ya ? self.wirte bla bla diye yap.
         config_file = open(self.rsyslog_conf_file_path, 'w+')
         config_file.write(rsyslog_conf_contents)
         config_file.close()
-
-        # Read contents of '/etc/rsyslog.d/remote.conf' file from task parameters.
         remote_conf_contents = str(self.remote_conf).strip()
         self.logger.debug(self.remote_conf_file_path + ': \n' + remote_conf_contents + '\n')
-        # This file is optional and only used when there are log files which we wish to backup to a central log server CONTINUOUSLY.
-        # If contents of the file exist, write it to remote configuration file.
         if remote_conf_contents and not remote_conf_contents.isspace():
             self.logger.debug('Updating remote.conf')
             remote_config_file = open(self.remote_conf_file_path, 'w+')
@@ -76,34 +59,15 @@ class Rsyslog(AbstractPlugin):
             remote_config_file.close()
         else:
             self.logger.debug('CANNOT update remote.conf')
-
-        # Finally, restart rsyslog service
         self.execute('service rsyslog restart', shell=True)
         self.logger.debug('Rsyslog service restarted.')
-
-        ########################################################################
-        #
-        # 'logrotate' configuration
-        #
-        ########################################################################
         self.logger.debug('Processing logrotate config')
-
-        # logrotate.conf parameters
-        # Rotation interval specifies when to handle log files.
-        # Each log file may be handled 'daily', 'weekly', 'monthly' or when it grows too large.
         rotation_interval = str(json.loads(self.data)['rotationInterval'])
-        # Log files are rotated 'keepBacklogs' times before being removed or mailed to the address specified in a mail directive.
-        # If count is 0, old versions are removed rather than rotated.
         keep_back_logs = str(json.loads(self.data)['keepBacklogs'])
-        # If 'maxSize' is reached, force log rotation.
         max_size = str(json.loads(self.data)['maxSize'])
-        # Immediately after rotation (before the postrotate script is run) the log file is created.
         create_new_log_files = json.loads(self.data)['createNewLogFiles']
-        # Old versions of log files are compressed with gzip(1) by default.
         compress_old_log_files = json.loads(self.data)['compressOldLogFiles']
-        # If the log file is missing, go on to the next one without issuing an error message.
         missing_ok = json.loads(self.data)['missingOk']
-
         f = open(self.log_rotate_conf_file_path, 'w')
         if rotation_interval:
             f.write(rotation_interval + '\n')
@@ -123,14 +87,12 @@ class Rsyslog(AbstractPlugin):
             f.write('missingok\n')
         f.write('include /etc/logrotate.d\n')
         f.close()
-
         self.logger.debug('Logrotate config updated')
+        self.context.create_response(code=self.message_code.TASK_PROCESSED.value, message='rsyslog-response',
+                                     data="", content_type=ContentType.APPLICATION_JSON.value)
 
 
 def handle_policy(profile_data, context):
-        # Do what ever you want here
-    # You can create command class but it is not necessary
-    # You can use directly this method.
     plugin = Rsyslog(profile_data, context)
     plugin.handle_policy()
 
@@ -139,12 +101,6 @@ class Item(object):
     record_description = ""
     log_file_path = ""
 
-    # The class "constructor" - It's actually an initializer
     def __init__(self, record_description, log_file_path):
         self.record_description = record_description
         self.log_file_path = log_file_path
-
-
-def make_student(record_description, log_file_path):
-    item = Item(record_description, log_file_path)
-    return item

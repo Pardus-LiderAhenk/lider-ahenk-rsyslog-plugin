@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import tr.org.liderahenk.liderconsole.core.constants.LiderConstants;
 import tr.org.liderahenk.liderconsole.core.dialogs.IProfileDialog;
+import tr.org.liderahenk.liderconsole.core.exceptions.ValidationException;
 import tr.org.liderahenk.liderconsole.core.model.Profile;
 import tr.org.liderahenk.liderconsole.core.utils.SWTResourceManager;
 import tr.org.liderahenk.liderconsole.core.widgets.Notifier;
@@ -473,6 +474,11 @@ public class RsyslogProfileDialog implements IProfileDialog {
 		}
 		combo.select(0); // select first option by default.
 		return false;
+	}
+
+	@Override
+	public void validateBeforeSave() throws ValidationException {
+		
 	}
 
 }
