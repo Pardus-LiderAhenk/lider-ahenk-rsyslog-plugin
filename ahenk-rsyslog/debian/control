@@ -3,12 +3,12 @@ Section: unknown
 Priority: optional
 Maintainer: TUBITAK ULAKBIM
 Build-Depends: debhelper (>= 9)
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Homepage: http://www.liderahenk.org.tr
 
-Package: rsyslog
+Package: ahenk-rsyslog
 Version: 1.0.0
 Architecture: any
-Depends: python3 (>= 3), rsyslog
+Depends: python3 (>= 3), rsyslog, rsyslog-relp
 Description: LiderAhenk ahenk-rsyslog application
  Long Desc
