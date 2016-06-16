@@ -242,13 +242,13 @@ public class RsyslogProfileDialog implements IProfileDialog {
 		}
 
 		lblGate = new Label(composite, SWT.NONE);
-		lblGate.setText(Messages.getString("GATE"));
+		lblGate.setText(Messages.getString("PORT"));
 
 		txtPort = new Text(composite, SWT.BORDER);
 		txtPort.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		if (profile != null && profile.getProfileData() != null
-				&& profile.getProfileData().get(RsyslogConstants.PARAMETERS.GATE) != null) {
-			txtPort.setText((String) profile.getProfileData().get(RsyslogConstants.PARAMETERS.GATE));
+				&& profile.getProfileData().get(RsyslogConstants.PARAMETERS.PORT) != null) {
+			txtPort.setText((String) profile.getProfileData().get(RsyslogConstants.PARAMETERS.PORT));
 		}
 
 		lblProtocol = new Label(composite, SWT.NONE);
@@ -438,7 +438,7 @@ public class RsyslogProfileDialog implements IProfileDialog {
 			profileData.put(RsyslogConstants.PARAMETERS.ADDRESS, txtRemoteServerAddress.getText());
 		}
 		if (txtPort != null && !"".equals(txtPort.getText())) {
-			profileData.put(RsyslogConstants.PARAMETERS.GATE, txtPort.getText());
+			profileData.put(RsyslogConstants.PARAMETERS.PORT, txtPort.getText());
 		}
 		profileData.put(RsyslogConstants.PARAMETERS.PROTOCOL, RsyslogUtils.getSelectedValue(cmbProtocol));
 

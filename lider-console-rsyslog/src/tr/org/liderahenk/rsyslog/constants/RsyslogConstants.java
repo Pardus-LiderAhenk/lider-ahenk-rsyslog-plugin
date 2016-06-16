@@ -14,7 +14,7 @@ public class RsyslogConstants {
 		public static final String COMPRESS_OLD_LOG_FILE = "compressOldLogFiles";
 		public static final String PASS_AWAY_WITHOUT_ERROR_IF_FILE_NOT_EXIST = "missingOk";
 		public static final String ADDRESS = "ADDRESS";
-		public static final String GATE = "GATE";
+		public static final String PORT = "PORT";
 		public static final String PROTOCOL = "PROTOCOL";
 		public static final String LIST_ITEMS = "items";
 	}

@@ -33,10 +33,10 @@ class Rsyslog(AbstractPlugin):
             self.logger.debug('Processing Rsyslog plugin')
             items = json.loads(self.data)['items']
             for item in items:
-                if str(item['isLocal']).upper() == 'EVET':
+                if str(item['isLocal']).upper() == 'EVET' or str(item['isLocal']).upper() == 'YES':
                     self.rsyslog_conf += str(item['recordDescription'])+'\t'+str(item['logFilePath'])+'\n'
                 else:
-                    self.remote_conf += str(item['recordDescription'])+' '+self.protocol+str(json.loads(self.data)['ADDRESS'])+':'+str(json.loads(self.data)['GATE'])+'\n'
+                    self.remote_conf += str(item['recordDescription'])+' '+self.protocol+str(json.loads(self.data)['ADDRESS'])+':'+str(json.loads(self.data)['PORT'])+'\n'
             self.rsyslog_conf = self.default_config.replace("#RULE_STR#", self.rsyslog_conf)
             self.logger.debug('Rsyslog Config files are ready')
             (result_code, p_out, p_err) = self.execute(
@@ -90,11 +90,11 @@ class Rsyslog(AbstractPlugin):
             f.write('include /etc/logrotate.d\n')
             f.close()
             self.logger.debug('Logrotate config updated')
-            self.context.create_response(code=self.message_code.TASK_PROCESSED.value, message='rsyslog-response',
+            self.context.create_response(code=self.message_code.POLICY_PROCESSED.value, message='rsyslog-response',
                                          data="", content_type=ContentType.APPLICATION_JSON.value)
         except Exception as e:
             self.logger.debug(str(e))
-            self.context.create_response(code=self.message_code.TASK_ERROR.value, message='rsyslog-response',
+            self.context.create_response(code=self.message_code.POLICY_ERROR.value, message='rsyslog-response',
                                          data="", content_type=ContentType.APPLICATION_JSON.value)
 
 
