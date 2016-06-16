@@ -89,13 +89,13 @@ class Rsyslog(AbstractPlugin):
                 f.write('missingok\n')
             f.write('include /etc/logrotate.d\n')
             f.close()
-            self.logger.debug('Logrotate config updated')
-            self.context.create_response(code=self.message_code.POLICY_PROCESSED.value, message='rsyslog-response',
-                                         data="", content_type=ContentType.APPLICATION_JSON.value)
+            self.logger.debug("Rsyslog Profile Processed")
+            self.context.create_response(code=self.message_code.POLICY_PROCESSED.value, message=' Rsyslog Profile processed succesfully ',
+                                         content_type=ContentType.APPLICATION_JSON.value)
         except Exception as e:
             self.logger.debug(str(e))
-            self.context.create_response(code=self.message_code.POLICY_ERROR.value, message='rsyslog-response',
-                                         data="", content_type=ContentType.APPLICATION_JSON.value)
+            self.context.create_response(code=self.message_code.POLICY_ERROR.value, message=' Error in Rsyslog Profile Process ',
+                                         content_type=ContentType.APPLICATION_JSON.value)
 
 
 def handle_policy(profile_data, context):
