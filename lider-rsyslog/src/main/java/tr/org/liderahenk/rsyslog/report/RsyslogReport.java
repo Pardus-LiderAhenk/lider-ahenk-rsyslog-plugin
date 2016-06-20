@@ -1,5 +1,6 @@
 package tr.org.liderahenk.rsyslog.report;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,6 +65,21 @@ public class RsyslogReport extends BaseReportTemplate {
 			public Long getId() {
 				return null;
 			}
+
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
+
+			@Override
+			public String getDefaultValue() {
+				return null;
+			}
+
+			@Override
+			public boolean isMandatory() {
+				return false;
+			}
 		});
 		// Plugin version
 		return params;
@@ -77,16 +93,6 @@ public class RsyslogReport extends BaseReportTemplate {
 		columns.add(new IReportTemplateColumn() {
 
 			private static final long serialVersionUID = -7169058053952522305L;
-
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
-
-			@Override
-			public Integer getWidth() {
-				return null;
-			}
 
 			@Override
 			public IReportTemplate getTemplate() {
@@ -107,21 +113,16 @@ public class RsyslogReport extends BaseReportTemplate {
 			public Integer getColumnOrder() {
 				return 1;
 			}
+
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
 		});
 		// Plugin name
 		columns.add(new IReportTemplateColumn() {
 
 			private static final long serialVersionUID = -7169058053952522305L;
-
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
-
-			@Override
-			public Integer getWidth() {
-				return null;
-			}
 
 			@Override
 			public IReportTemplate getTemplate() {
@@ -142,21 +143,16 @@ public class RsyslogReport extends BaseReportTemplate {
 			public Integer getColumnOrder() {
 				return 2;
 			}
+
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
 		});
 		// Plugin name
 		columns.add(new IReportTemplateColumn() {
 
 			private static final long serialVersionUID = -7169058053952522305L;
-
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
-
-			@Override
-			public Integer getWidth() {
-				return null;
-			}
 
 			@Override
 			public IReportTemplate getTemplate() {
@@ -177,20 +173,15 @@ public class RsyslogReport extends BaseReportTemplate {
 			public Integer getColumnOrder() {
 				return 3;
 			}
+
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
 		});
 		columns.add(new IReportTemplateColumn() {
 
 			private static final long serialVersionUID = -7169058053952522305L;
-
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
-
-			@Override
-			public Integer getWidth() {
-				return null;
-			}
 
 			@Override
 			public IReportTemplate getTemplate() {
@@ -211,21 +202,16 @@ public class RsyslogReport extends BaseReportTemplate {
 			public Integer getColumnOrder() {
 				return 4;
 			}
+
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
 		});
 		// Plugin name
 		columns.add(new IReportTemplateColumn() {
 
 			private static final long serialVersionUID = -7169058053952522305L;
-
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
-
-			@Override
-			public Integer getWidth() {
-				return null;
-			}
 
 			@Override
 			public IReportTemplate getTemplate() {
@@ -246,21 +232,16 @@ public class RsyslogReport extends BaseReportTemplate {
 			public Integer getColumnOrder() {
 				return 5;
 			}
+
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
 		});
 		// Plugin name
 		columns.add(new IReportTemplateColumn() {
 
 			private static final long serialVersionUID = -7169058053952522305L;
-
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
-
-			@Override
-			public Integer getWidth() {
-				return null;
-			}
 
 			@Override
 			public IReportTemplate getTemplate() {
@@ -281,21 +262,16 @@ public class RsyslogReport extends BaseReportTemplate {
 			public Integer getColumnOrder() {
 				return 6;
 			}
+
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
 		});
 		// Plugin name
 		columns.add(new IReportTemplateColumn() {
 
 			private static final long serialVersionUID = -7169058053952522305L;
-
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
-
-			@Override
-			public Integer getWidth() {
-				return null;
-			}
 
 			@Override
 			public IReportTemplate getTemplate() {
@@ -316,21 +292,16 @@ public class RsyslogReport extends BaseReportTemplate {
 			public Integer getColumnOrder() {
 				return 7;
 			}
+
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
 		});
 		// Plugin name
 		columns.add(new IReportTemplateColumn() {
 
 			private static final long serialVersionUID = -7169058053952522305L;
-
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
-
-			@Override
-			public Integer getWidth() {
-				return null;
-			}
 
 			@Override
 			public IReportTemplate getTemplate() {
@@ -352,18 +323,13 @@ public class RsyslogReport extends BaseReportTemplate {
 				return 8;
 			}
 
+			@Override
+			public Date getCreateDate() {
+				return new Date();
+			}
+
 		});
 		return columns;
-	}
-
-	@Override
-	public String getReportHeader() {
-		return null;
-	}
-
-	@Override
-	public String getReportFooter() {
-		return null;
 	}
 
 	@Override
