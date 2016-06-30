@@ -1,10 +1,8 @@
-package tr.org.liderahenk.rsyslog.report;
+package tr.org.liderahenk.rsyslog.report.templates;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.codehaus.jackson.map.ObjectMapper;
 
 import tr.org.liderahenk.lider.core.api.persistence.entities.IReportTemplate;
 import tr.org.liderahenk.lider.core.api.persistence.entities.IReportTemplateColumn;
@@ -12,31 +10,30 @@ import tr.org.liderahenk.lider.core.api.persistence.entities.IReportTemplatePara
 import tr.org.liderahenk.lider.core.api.persistence.enums.ParameterType;
 import tr.org.liderahenk.lider.core.api.plugin.BaseReportTemplate;
 
-public class RsyslogReport extends BaseReportTemplate {
+public class RsyslogReportTemplateImpl extends BaseReportTemplate {
 
 	private static final long serialVersionUID = -4121593523951121045L;
 
 	@Override
 	public String getName() {
-		return "Rsyslog Konfigurasyonu";
+		return "Ahenk Log Kayıtları";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Log dosyalarının konfigurasyonu hakkında detay rapor";
+		return "Ahenk kurulu bilgisayarlardan toplanan log kayıtları";
 	}
 
 	@Override
 	public String getQuery() {
 		return "SELECT s.fromHost as fromhost,s.eventUser as eventuser, s.eventSource as eventsource,s.eventLogType as eventlogtype , "
 				+ "s.genericFileName as genericfilename, s.message as message, s.receivedAt as receivedat, s.sysLogTag as syslogtag "
-				+ "FROM SystemEventsImpl s " + "WHERE s.fromHost LIKE :fromhostparam";
+				+ "FROM SystemEventsImpl s WHERE s.fromHost LIKE :fromhostparam ORDER BY s.deviceReportedTime DESC";
 	}
 
 	@Override
 	public Set<? extends IReportTemplateParameter> getTemplateParams() {
 		Set<IReportTemplateParameter> params = new HashSet<IReportTemplateParameter>();
-		// Plugin name
 		params.add(new IReportTemplateParameter() {
 
 			private static final long serialVersionUID = -6579501320904978340L;
@@ -81,7 +78,6 @@ public class RsyslogReport extends BaseReportTemplate {
 				return false;
 			}
 		});
-		// Plugin version
 		return params;
 	}
 
@@ -332,18 +328,7 @@ public class RsyslogReport extends BaseReportTemplate {
 		return columns;
 	}
 
-	@Override
-	public String toJson() {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			return mapper.writeValueAsString(this);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	protected RsyslogReport getSelf() {
+	protected RsyslogReportTemplateImpl getSelf() {
 		return this;
 	}
 

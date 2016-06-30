@@ -9,7 +9,7 @@
 
 	<service ref="rsyslogTemplate" interface="tr.org.liderahenk.lider.core.api.persistence.entities.IReportTemplate" />
 	<bean id="rsyslogTemplate"
-		class="tr.org.liderahenk.rsyslog.report.RsyslogReport" />
+		class="tr.org.liderahenk.rsyslog.report.templates.RsyslogReportTemplateImpl" />
 		
 	<cm:property-placeholder persistent-id="tr.org.liderahenk.rsyslog"
 		update-strategy="reload">
