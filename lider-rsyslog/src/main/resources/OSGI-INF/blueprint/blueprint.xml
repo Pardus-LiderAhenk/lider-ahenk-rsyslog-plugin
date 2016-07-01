@@ -18,7 +18,6 @@
 	<!-- IPluginInfo implementation is used to register plugin -->
 	<service ref="pluginInfoImpl"
 		interface="tr.org.liderahenk.lider.core.api.plugin.IPluginInfo" />
-		
 	<bean id="pluginInfoImpl" class="tr.org.liderahenk.rsyslog.plugininfo.PluginInfoImpl"
 		init-method="refresh">
 		<!-- Plugin definition -->
@@ -29,6 +28,7 @@
 		<property name="userOriented" value="${plugin.user.oriented}" />
 		<property name="policyPlugin" value="${plugin.policy.plugin}" />
 		<property name="taskPlugin" value="${plugin.task.plugin}" />
+		<property name="usesFileTransfer" value="${plugin.uses.file.transfer}" />
 		<property name="xbased" value="${plugin.x.based}" />
 	</bean>
 
