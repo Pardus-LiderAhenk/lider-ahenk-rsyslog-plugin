@@ -42,8 +42,8 @@ class Rsyslog(AbstractPlugin):
             self.rsyslog_conf = self.default_config.replace("#RULE_STR#", self.rsyslog_conf)
             self.logger.debug('[Rsyslog] Rsyslog config files are ready')
             (result_code, p_out, p_err) = self.execute(
-                "find /etc/rsyslog.d/ -name '*.conf' -exec bash -c 'mv $0 ${0/conf/conf.orig}' {} \;", shell=True)
-            if str(p_out.strip()) == '0':
+                "find /etc/rsyslog.d/ -name '*.conf' -exec bash -c 'sudo mv ${0/conf/conf.orig}' {} \;", shell=True)
+            if str(result_code) == '0':
                 self.logger.debug('[Rsyslog] Backup up old config files.')
             else:
                 self.logger.debug('[Rsyslog] Error while backing up old config files')
@@ -82,7 +82,7 @@ class Rsyslog(AbstractPlugin):
             else:
                 f.write('rotate 4\n')
             if max_size:
-                f.write('maxsize ' + max_size + '\n')
+                f.write('maxsize ' + max_size + 'M\n')
             if create_new_log_files:
                 f.write('create\n')
             if compress_old_log_files:
