@@ -17,6 +17,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -103,7 +105,7 @@ public class RsyslogProfileDialog implements IProfileDialog {
 
 	private void createTableColumns() {
 
-		String[] titles = { Messages.getString("RECORD_DESCRIPTION"), Messages.getString("LOG_FILE_PATH") };
+		String[] titles = { Messages.getString("IS_LOCAL"), Messages.getString("RECORD_DESCRIPTION"), Messages.getString("LOG_FILE_PATH") };
 		int[] bounds = { 200, 200 };
 
 		TableViewerColumn isLocalColumn = createTableViewerColumn(titles[0], bounds[0]);
@@ -117,7 +119,7 @@ public class RsyslogProfileDialog implements IProfileDialog {
 			}
 		});
 
-		TableViewerColumn recordDescriptionColumn = createTableViewerColumn(titles[0], bounds[0]);
+		TableViewerColumn recordDescriptionColumn = createTableViewerColumn(titles[1], bounds[0]);
 		recordDescriptionColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -128,7 +130,7 @@ public class RsyslogProfileDialog implements IProfileDialog {
 			}
 		});
 
-		TableViewerColumn logFilePathColumn = createTableViewerColumn(titles[1], bounds[1]);
+		TableViewerColumn logFilePathColumn = createTableViewerColumn(titles[2], bounds[1]);
 		logFilePathColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -188,6 +190,19 @@ public class RsyslogProfileDialog implements IProfileDialog {
 
 		txtlogFileSize = new Text(composite, SWT.BORDER);
 		txtlogFileSize.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		txtlogFileSize.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (!(('0' <= e.character && e.character <= '9') || e.keyCode == 8))
+					e.doit = false;
+			}
+		});
 		if (profile != null && profile.getProfileData() != null
 				&& profile.getProfileData().get(RsyslogConstants.PARAMETERS.LOG_FILE_SIZE) != null) {
 			txtlogFileSize.setText((String) profile.getProfileData().get(RsyslogConstants.PARAMETERS.LOG_FILE_SIZE));
