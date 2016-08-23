@@ -332,4 +332,9 @@ public class RsyslogReportTemplateImpl extends BaseReportTemplate {
 		return this;
 	}
 
+	@Override
+	public String getCode() {
+		return "RSYSLOG-REPORT";
+	}
+
 }
