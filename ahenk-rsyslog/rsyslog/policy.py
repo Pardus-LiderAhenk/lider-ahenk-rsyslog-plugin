@@ -6,7 +6,6 @@
 
 import json
 
-from base.model.enum.ContentType import ContentType
 from base.plugin.abstract_plugin import AbstractPlugin
 
 
@@ -94,13 +93,13 @@ class Rsyslog(AbstractPlugin):
             self.logger.debug('[Rsyslog] Rsyslog Profile Processed')
             self.context.create_response(code=self.message_code.POLICY_PROCESSED.value,
                                          message='Ajan Rsyslog Profili başarıyla uygulandı.',
-                                         content_type=ContentType.APPLICATION_JSON.value)
+                                         content_type=self.get_content_type().APPLICATION_JSON.value)
         except Exception as e:
             self.logger.error(
                 '[Rsyslog] A problem occurred while applying rsyslog profile. Error Message: {0}'.format(str(e)))
             self.context.create_response(code=self.message_code.POLICY_ERROR.value,
                                          message='Rsyslog Profili uygulanırken bir hata oluştu.',
-                                         content_type=ContentType.APPLICATION_JSON.value)
+                                         content_type=self.get_content_type().APPLICATION_JSON.value)
 
 
 def handle_policy(profile_data, context):
