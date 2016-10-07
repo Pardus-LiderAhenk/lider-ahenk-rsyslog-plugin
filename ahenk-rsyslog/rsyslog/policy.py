@@ -30,7 +30,7 @@ class Rsyslog(AbstractPlugin):
         try:
             if str(json.loads(self.data)['PROTOCOL']) == 'UDP':
                 self.protocol = '@'
-            self.logger.debug('[Rsyslog] Handling profile ...')
+            self.logger.debug('Handling profile ...')
             items = json.loads(self.data)['items']
             for item in items:
                 if str(item['isLocal']).upper() == 'EVET' or str(item['isLocal']).upper() == 'YES':
@@ -39,13 +39,13 @@ class Rsyslog(AbstractPlugin):
                     self.remote_conf += str(item['recordDescription']) + ' ' + self.protocol + str(
                         json.loads(self.data)['ADDRESS']) + ':' + str(json.loads(self.data)['PORT']) + '\n'
             self.rsyslog_conf = self.default_config.replace("#RULE_STR#", self.rsyslog_conf)
-            self.logger.debug('[Rsyslog] Rsyslog config files are ready')
+            self.logger.debug('Rsyslog config files are ready')
             (result_code, p_out, p_err) = self.execute(
                 "find /etc/rsyslog.d/ -name '*.conf' -exec bash -c 'sudo mv ${0/conf/conf.orig}' {} \;", shell=True)
             if str(result_code) == '0':
-                self.logger.debug('[Rsyslog] Backup up old config files.')
+                self.logger.debug('Backup up old config files.')
             else:
-                self.logger.debug('[Rsyslog] Error while backing up old config files')
+                self.logger.debug('Error while backing up old config files')
 
             rsyslog_conf_contents = str(self.rsyslog_conf).strip()
             self.logger.debug(self.rsyslog_conf_file_path + ': \n' + rsyslog_conf_contents + '\n')
@@ -56,15 +56,15 @@ class Rsyslog(AbstractPlugin):
             remote_conf_contents = str(self.remote_conf).strip()
             # self.logger.debug(self.remote_conf_file_path + ': \n' + remote_conf_contents + '\n')
             if remote_conf_contents and not remote_conf_contents.isspace():
-                self.logger.debug('[Rsyslog] Updating remote.conf')
+                self.logger.debug('Updating remote.conf')
                 remote_config_file = open(self.remote_conf_file_path, 'w+')
                 remote_config_file.write(remote_conf_contents)
                 remote_config_file.close()
             else:
-                self.logger.debug('[Rsyslog] CANNOT update remote.conf')
+                self.logger.debug('CANNOT update remote.conf')
             self.execute('service rsyslog restart', shell=True)
-            self.logger.debug('[Rsyslog] Rsyslog service restarted.')
-            self.logger.debug('[Rsyslog] Processing logrotate config')
+            self.logger.debug('Rsyslog service restarted.')
+            self.logger.debug('Processing logrotate config')
             rotation_interval = str(json.loads(self.data)['rotationInterval'])
             keep_back_logs = str(json.loads(self.data)['keepBacklogs'])
             max_size = str(json.loads(self.data)['maxSize'])
@@ -90,13 +90,13 @@ class Rsyslog(AbstractPlugin):
                 f.write('missingok\n')
             f.write('include /etc/logrotate.d\n')
             f.close()
-            self.logger.debug('[Rsyslog] Rsyslog Profile Processed')
+            self.logger.debug('Rsyslog Profile Processed')
             self.context.create_response(code=self.message_code.POLICY_PROCESSED.value,
                                          message='Ajan Rsyslog Profili başarıyla uygulandı.',
                                          content_type=self.get_content_type().APPLICATION_JSON.value)
         except Exception as e:
             self.logger.error(
-                '[Rsyslog] A problem occurred while applying rsyslog profile. Error Message: {0}'.format(str(e)))
+                'A problem occurred while applying rsyslog profile. Error Message: {0}'.format(str(e)))
             self.context.create_response(code=self.message_code.POLICY_ERROR.value,
                                          message='Rsyslog Profili uygulanırken bir hata oluştu.',
                                          content_type=self.get_content_type().APPLICATION_JSON.value)
