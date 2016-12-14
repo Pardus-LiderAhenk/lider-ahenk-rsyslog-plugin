@@ -5,7 +5,7 @@
 def info():
     inf = dict()
     inf['name'] = 'rsyslog'
-    inf['version'] = '1.0.0'
+    inf['version'] = '1.0.0-alfa'
     inf['support'] = 'debian'
     inf['description'] = 'System Log file configuration and rotation info are defined with this plugin.'
     inf['task'] = False
