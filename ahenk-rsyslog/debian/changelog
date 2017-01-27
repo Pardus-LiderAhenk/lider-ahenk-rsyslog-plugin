@@ -1,4 +1,4 @@
-rsyslog (1.0.0) unstable; urgency=low
+rsyslog (1.0.0-beta) unstable; urgency=low
 
   * rsyslog Plugin
 
