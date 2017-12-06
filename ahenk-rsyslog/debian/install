@@ -1,1 +1,1 @@
-rsyslog/ /opt/ahenk/plugins
+rsyslog/ /usr/share/ahenk/plugins
