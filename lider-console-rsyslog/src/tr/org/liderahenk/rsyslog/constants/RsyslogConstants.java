@@ -4,7 +4,7 @@ public class RsyslogConstants {
 	
 	public static final String PLUGIN_NAME = "rsyslog";
 	
-	public static final String PLUGIN_VERSION = "1.0.0";
+	public static final String PLUGIN_VERSION = "1.1";
 
 	public static final class PARAMETERS {
 		public static final String ROTATION_FREQUENCY = "rotationInterval";
